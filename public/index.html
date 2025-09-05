@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Link SMS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 Gerador de Link SMS</h1>
+            <p>Gere links SMS que abrem automaticamente o aplicativo de mensagens</p>
+        </header>
+
+        <main>
+            <div class="form-section">
+                <h2>Configurar SMS</h2>
+                <form id="smsForm">
+                    <div class="input-group">
+                        <label for="phoneNumber">Número do Telefone:</label>
+                        <input type="tel" id="phoneNumber" value="+7678" placeholder="+1234567890">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="message">Mensagem:</label>
+                        <textarea id="message" placeholder="Digite sua mensagem aqui...">PORTABILIDADE</textarea>
+                    </div>
+                    
+                    <button type="submit">Gerar Link SMS</button>
+                </form>
+            </div>
+
+            <div class="result-section" id="resultSection" style="display: none;">
+                <h2>Link SMS Gerado</h2>
+                <div class="link-container">
+                    <input type="text" id="generatedLink" readonly>
+                    <button id="copyBtn">Copiar</button>
+                </div>
+                
+                <div class="preview">
+                    <h3>Preview do Link:</h3>
+                    <a href="#" id="previewLink" class="sms-link">📱 Enviar SMS</a>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>Como usar:</h2>
+                <ol>
+                    <li>Configure o número de telefone e a mensagem</li>
+                    <li>Clique em "Gerar Link SMS"</li>
+                    <li>Copie o link gerado ou clique no preview</li>
+                    <li>O link abrirá automaticamente o aplicativo de SMS do dispositivo</li>
+                </ol>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
