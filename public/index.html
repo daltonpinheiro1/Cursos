@@ -3,54 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Link SMS</title>
+    <title>Link SMS Direto</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📱 Gerador de Link SMS</h1>
-            <p>Gere links SMS que abrem automaticamente o aplicativo de mensagens</p>
+            <h1>📱 Link SMS Direto</h1>
+            <p>Clique no botão abaixo para enviar SMS automaticamente</p>
         </header>
 
         <main>
-            <div class="form-section">
-                <h2>Configurar SMS</h2>
-                <form id="smsForm">
-                    <div class="input-group">
-                        <label for="phoneNumber">Número do Telefone:</label>
-                        <input type="tel" id="phoneNumber" value="+7678" placeholder="+1234567890">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="message">Mensagem:</label>
-                        <textarea id="message" placeholder="Digite sua mensagem aqui...">PORTABILIDADE</textarea>
-                    </div>
-                    
-                    <button type="submit">Gerar Link SMS</button>
-                </form>
-            </div>
-
-            <div class="result-section" id="resultSection" style="display: none;">
-                <h2>Link SMS Gerado</h2>
-                <div class="link-container">
-                    <input type="text" id="generatedLink" readonly>
-                    <button id="copyBtn">Copiar</button>
-                </div>
+            <div class="sms-section">
+                <h2>Enviar SMS</h2>
+                <p class="sms-info">
+                    <strong>Número:</strong> +7678<br>
+                    <strong>Mensagem:</strong> PORTABILIDADE
+                </p>
                 
-                <div class="preview">
-                    <h3>Preview do Link:</h3>
-                    <a href="#" id="previewLink" class="sms-link">📱 Enviar SMS</a>
+                <a href="sms:+7678?body=PORTABILIDADE" class="sms-button">
+                    📱 Enviar SMS Agora
+                </a>
+                
+                <div class="link-display">
+                    <h3>Link SMS:</h3>
+                    <code>sms:+7678?body=PORTABILIDADE</code>
+                    <button id="copyBtn" class="copy-btn">Copiar Link</button>
                 </div>
             </div>
 
             <div class="info-section">
-                <h2>Como usar:</h2>
+                <h2>Como funciona:</h2>
                 <ol>
-                    <li>Configure o número de telefone e a mensagem</li>
-                    <li>Clique em "Gerar Link SMS"</li>
-                    <li>Copie o link gerado ou clique no preview</li>
-                    <li>O link abrirá automaticamente o aplicativo de SMS do dispositivo</li>
+                    <li>Clique no botão "Enviar SMS Agora"</li>
+                    <li>O aplicativo de mensagens do seu dispositivo será aberto automaticamente</li>
+                    <li>O número +7678 e a mensagem "PORTABILIDADE" já estarão preenchidos</li>
+                    <li>Basta clicar em "Enviar" no seu app de mensagens</li>
                 </ol>
             </div>
         </main>

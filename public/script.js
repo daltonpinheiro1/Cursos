@@ -1,62 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('smsForm');
-    const resultSection = document.getElementById('resultSection');
-    const generatedLink = document.getElementById('generatedLink');
-    const previewLink = document.getElementById('previewLink');
     const copyBtn = document.getElementById('copyBtn');
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const phoneNumber = document.getElementById('phoneNumber').value.trim();
-        const message = document.getElementById('message').value.trim();
-        
-        if (!phoneNumber || !message) {
-            alert('Por favor, preencha todos os campos!');
-            return;
-        }
-        
-        // Gerar link SMS
-        const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
-        
-        // Atualizar interface
-        generatedLink.value = smsLink;
-        previewLink.href = smsLink;
-        
-        // Mostrar seção de resultado
-        resultSection.style.display = 'block';
-        resultSection.scrollIntoView({ behavior: 'smooth' });
-        
-        // Mostrar mensagem de sucesso
-        showSuccessMessage('Link SMS gerado com sucesso!');
-    });
+    const smsLink = 'sms:+7678?body=PORTABILIDADE';
 
     copyBtn.addEventListener('click', function() {
-        generatedLink.select();
-        generatedLink.setSelectionRange(0, 99999); // Para dispositivos móveis
-        
         try {
-            document.execCommand('copy');
-            showSuccessMessage('Link copiado para a área de transferência!');
-            
-            // Feedback visual
-            copyBtn.textContent = 'Copiado!';
-            copyBtn.style.background = '#38a169';
-            
-            setTimeout(() => {
-                copyBtn.textContent = 'Copiar';
-                copyBtn.style.background = '#48bb78';
-            }, 2000);
-            
-        } catch (err) {
-            // Fallback para navegadores mais antigos
-            navigator.clipboard.writeText(generatedLink.value).then(() => {
+            // Usar a API moderna de clipboard
+            navigator.clipboard.writeText(smsLink).then(() => {
                 showSuccessMessage('Link copiado para a área de transferência!');
+                
+                // Feedback visual
+                copyBtn.textContent = 'Copiado!';
+                copyBtn.style.background = '#38a169';
+                
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copiar Link';
+                    copyBtn.style.background = '#48bb78';
+                }, 2000);
+                
             }).catch(() => {
-                alert('Não foi possível copiar o link. Tente selecionar e copiar manualmente.');
+                // Fallback para navegadores mais antigos
+                fallbackCopyTextToClipboard(smsLink);
             });
+        } catch (err) {
+            fallbackCopyTextToClipboard(smsLink);
         }
     });
+
+    // Função fallback para copiar texto
+    function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showSuccessMessage('Link copiado para a área de transferência!');
+            } else {
+                showSuccessMessage('Não foi possível copiar automaticamente. O link é: ' + text);
+            }
+        } catch (err) {
+            showSuccessMessage('Não foi possível copiar o link. Tente selecionar e copiar manualmente.');
+        }
+        
+        document.body.removeChild(textArea);
+    }
 
     // Função para mostrar mensagens de sucesso
     function showSuccessMessage(message) {
@@ -72,35 +66,12 @@ document.addEventListener('DOMContentLoaded', function() {
         successDiv.textContent = message;
         successDiv.style.display = 'block';
         
-        // Inserir após o botão
-        const form = document.getElementById('smsForm');
-        form.appendChild(successDiv);
+        // Inserir após o botão de copiar
+        copyBtn.parentNode.appendChild(successDiv);
         
         // Remover após 3 segundos
         setTimeout(() => {
             successDiv.style.display = 'none';
         }, 3000);
     }
-
-    // Validação em tempo real do número de telefone
-    const phoneInput = document.getElementById('phoneNumber');
-    phoneInput.addEventListener('input', function() {
-        let value = this.value;
-        
-        // Remover caracteres não numéricos exceto + no início
-        if (value.length > 0 && value[0] !== '+') {
-            value = value.replace(/[^\d]/g, '');
-        } else if (value.length > 1) {
-            value = '+' + value.slice(1).replace(/[^\d]/g, '');
-        }
-        
-        this.value = value;
-    });
-
-    // Auto-resize do textarea
-    const messageTextarea = document.getElementById('message');
-    messageTextarea.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = this.scrollHeight + 'px';
-    });
 });
