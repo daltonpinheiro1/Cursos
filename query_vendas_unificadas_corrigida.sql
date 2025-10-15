@@ -1,5 +1,4 @@
 WITH VendasUnificadas AS (
-    /* Primeira tabela: vVivo_vendas */
     SELECT 
         CONCAT([ID], ',') AS ID,
         AUDITORIA_SITUACAO_NOME,
@@ -19,7 +18,6 @@ WITH VendasUnificadas AS (
     
     UNION ALL
     
-    /* Segunda tabela: vVivo_up_vendas */
     SELECT 
         CONCAT([ID], ',') AS ID,
         AUDITORIA_SITUACAO_NOME,
@@ -37,7 +35,6 @@ WITH VendasUnificadas AS (
     
     UNION ALL
     
-    /* Terceira tabela: vVivo_ctrl_pos_upgrade_vendas */
     SELECT 
         CONCAT([ID], ',') AS ID,
         AUDITORIA_SITUACAO_NOME,
@@ -54,7 +51,6 @@ WITH VendasUnificadas AS (
         AND AUDITORIA_SITUACAO_ID IN (5, 7, 8, 10, 15, 23, 25, 30, 31, 68, 69, 73, 85, 88, 89, 90)
 ),
 
-/* Verificação de vendas virgens através das tabelas de auditoria */
 VendasComStatusVirgem AS (
     SELECT 
         v.*,
@@ -70,13 +66,12 @@ VendasComStatusVirgem AS (
                 WHERE cpa.VENDA_ID = v.VENDA_ID
                     AND cpa.MARCACA_ID IN (7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 21, 22, 24, 26, 28, 29, 30, 31, 32, 33, 62, 63, 73, 74, 85, 86, 88)
             )
-            THEN 0  -- NÃO é virgem (passou por alguma marcação)
-            ELSE 1  -- É virgem (não passou por nenhuma marcação)
+            THEN 0
+            ELSE 1
         END AS IS_VIRGEM
     FROM VendasUnificadas v
 )
 
-/* Query final com priorização */
 SELECT 
     ID,
     AUDITORIA_SITUACAO_NOME,
@@ -90,10 +85,10 @@ SELECT
     IS_VIRGEM,
     CASE 
         WHEN IS_VIRGEM = 1 THEN 'VENDAS VIRGENS'
-        ELSE 'VENDAS NÃO VIRGENS'
+        ELSE 'VENDAS NAO VIRGENS'
     END AS STATUS_VIRGEM
 FROM VendasComStatusVirgem
 ORDER BY 
-    IS_VIRGEM DESC,  /* 1. Prioridade para vendas virgens (1 = virgem, 0 = não virgem) */
-    CLIENTE_TITULAR, /* 2. Cliente Titular */
-    AUDITORIA_DATA ASC /* 3. Auditoria_Data mais antiga primeiro */
+    IS_VIRGEM DESC,
+    CLIENTE_TITULAR,
+    AUDITORIA_DATA ASC
